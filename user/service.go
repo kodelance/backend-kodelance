@@ -10,6 +10,7 @@ import (
 type Service interface {
 	RegisterUser(input RegisterInput) (User, error)
 	LoginUser(input LoginInput) (User, error)
+	IsEmailAvailable(input CheckEmailInput) (bool, error)
 }
 
 type service struct {
@@ -46,7 +47,11 @@ func (s *service) LoginUser(input LoginInput) (User, error) {
 
 	user, err := s.repository.FindByEmail(email)
 	if err != nil {
-		return user, errors.New("Email not found")
+		return user, err
+	}
+
+	if user.ID == 0 {
+		return user, errors.New("Email Not Found")
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
@@ -55,4 +60,17 @@ func (s *service) LoginUser(input LoginInput) (User, error) {
 	}
 
 	return user, nil
+}
+
+func (s *service) IsEmailAvailable(input CheckEmailInput) (bool, error) {
+	user, err := s.repository.FindByEmail(input.Email)
+	if err != nil {
+		return false, err
+	}
+
+	if user.ID == 0 {
+		return true, nil
+	}
+
+	return false, err
 }
