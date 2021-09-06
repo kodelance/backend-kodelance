@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"kodelance/auth"
 	"kodelance/config"
 	"kodelance/handler"
 	"kodelance/user"
@@ -25,7 +26,9 @@ func main() {
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
-	userHandler := handler.NewUserHandler(userService)
+	authService := auth.NewService()
+
+	userHandler := handler.NewUserHandler(userService, authService)
 
 	router := gin.Default()
 	api := router.Group("/api/v1")

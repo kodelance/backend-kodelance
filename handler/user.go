@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"kodelance/auth"
 	"kodelance/helper"
 	"kodelance/user"
 	"net/http"
@@ -10,10 +11,11 @@ import (
 
 type userHandler struct {
 	userService user.Service
+	authService auth.Service
 }
 
-func NewUserHandler(userService user.Service) *userHandler {
-	return &userHandler{userService}
+func NewUserHandler(userService user.Service, authService auth.Service) *userHandler {
+	return &userHandler{userService, authService}
 }
 
 func (h *userHandler) RegisterUser(c *gin.Context) {
@@ -32,7 +34,13 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 		return
 	}
 
-	formatData := user.FormatterOutput(newUser, "tokentoken")
+	token, err := h.authService.GenerateToken(newUser.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, helper.ApiResponse("Register Failed", 400, "error", nil))
+		return
+	}
+
+	formatData := user.FormatterOutput(newUser, token)
 	response := helper.ApiResponse("Account has been registed", 201, "success", formatData)
 	c.JSON(http.StatusOK, response)
 }
@@ -54,7 +62,13 @@ func (h *userHandler) LoginUser(c *gin.Context) {
 		return
 	}
 
-	formatData := user.FormatterOutput(userLogged, "tokentokentoken")
+	token, err := h.authService.GenerateToken(userLogged.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, helper.ApiResponse("Register Failed", 400, "error", nil))
+		return
+	}
+
+	formatData := user.FormatterOutput(userLogged, token)
 	response := helper.ApiResponse("Successfuly Loggedin", 200, "success", formatData)
 	c.JSON(http.StatusOK, response)
 }
