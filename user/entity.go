@@ -21,3 +21,8 @@ type UserOutput struct {
 	Fullname string `json:"fullname"`
 	Token    string `json:"token"`
 }
+
+type LoginInput struct {
+	Email    string `binding:"required"`
+	Password string `binding:"required"`
+}
