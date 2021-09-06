@@ -10,7 +10,7 @@ type User struct {
 }
 
 type RegisterInput struct {
-	Email    string `binding:"required, email"`
+	Email    string `binding:"required,email"`
 	Password string `binding:"required"`
 	Fullname string `binding:"required"`
 }
@@ -23,6 +23,10 @@ type UserOutput struct {
 }
 
 type LoginInput struct {
-	Email    string `binding:"required, email"`
+	Email    string `binding:"required,email"`
 	Password string `binding:"required"`
+}
+
+type CheckEmailInput struct {
+	Email string `binding:"required,email"`
 }
