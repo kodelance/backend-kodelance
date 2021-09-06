@@ -9,7 +9,7 @@ type User struct {
 	Fullname string `gorm:"not null"`
 }
 
-type UserInput struct {
+type RegisterInput struct {
 	Email    string `binding:"required, email"`
 	Password string `binding:"required"`
 	Fullname string `binding:"required"`

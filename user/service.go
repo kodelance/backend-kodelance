@@ -8,7 +8,7 @@ import (
 )
 
 type Service interface {
-	RegisterUser(input UserInput) (User, error)
+	RegisterUser(input RegisterInput) (User, error)
 	LoginUser(input LoginInput) (User, error)
 }
 
@@ -20,7 +20,7 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) RegisterUser(input UserInput) (User, error) {
+func (s *service) RegisterUser(input RegisterInput) (User, error) {
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.MinCost)
 
 	if err != nil {

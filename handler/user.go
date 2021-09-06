@@ -17,7 +17,7 @@ func NewUserHandler(userService user.Service) *userHandler {
 }
 
 func (h *userHandler) RegisterUser(c *gin.Context) {
-	var userInput user.UserInput
+	var userInput user.RegisterInput
 
 	if err := c.ShouldBindJSON(&userInput); err != nil {
 		errors := helper.FormatError(err)
