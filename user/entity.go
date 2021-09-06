@@ -10,7 +10,7 @@ type User struct {
 }
 
 type UserInput struct {
-	Email    string `binding:"required"`
+	Email    string `binding:"required, email"`
 	Password string `binding:"required"`
 	Fullname string `binding:"required"`
 }
@@ -23,6 +23,6 @@ type UserOutput struct {
 }
 
 type LoginInput struct {
-	Email    string `binding:"required"`
+	Email    string `binding:"required, email"`
 	Password string `binding:"required"`
 }
