@@ -7,15 +7,15 @@ import (
 	"kodelance/handler"
 	"kodelance/routes"
 	"kodelance/user"
+	"log"
 
-	"github.com/subosito/gotenv"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	// Setup Env File
-	if err := gotenv.Load(); err != nil {
-		fmt.Println(err)
-		panic("Failed load env")
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
 	}
 
 	// Setup Database
