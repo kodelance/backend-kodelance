@@ -5,18 +5,20 @@ import (
 	"kodelance/auth"
 	"kodelance/config"
 	"kodelance/handler"
+	"kodelance/routes"
 	"kodelance/user"
 
-	"github.com/gin-gonic/gin"
 	"github.com/subosito/gotenv"
 )
 
 func main() {
+	// Setup Env File
 	if err := gotenv.Load(); err != nil {
 		fmt.Println(err)
 		panic("Failed load env")
 	}
 
+	// Setup Database
 	db, err := config.InitDb()
 	if err != nil {
 		fmt.Println(err)
@@ -24,18 +26,19 @@ func main() {
 	}
 	fmt.Println("Sukses connect ke database!")
 
+	// Setup Repository
 	userRepository := user.NewRepository(db)
+
+	// Setup Service
 	userService := user.NewService(userRepository)
 	authService := auth.NewService()
 
+	// Setup Handler
 	userHandler := handler.NewUserHandler(userService, authService)
 
-	router := gin.Default()
-	api := router.Group("/api/v1")
+	// Setup Router
+	r := routes.NewRoutes(userHandler)
+	route := r.Route()
 
-	api.POST("/auth/register", userHandler.RegisterUser)
-	api.POST("/auth/login", userHandler.LoginUser)
-	api.POST("/email_checkers", userHandler.IsEmailAvailable)
-
-	router.Run()
+	route.Run()
 }
