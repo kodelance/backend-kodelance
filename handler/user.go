@@ -9,6 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type UserHandler interface {
+	RegisterUser(c *gin.Context)
+	LoginUser(c *gin.Context)
+	IsEmailAvailable(c *gin.Context)
+}
+
 type userHandler struct {
 	userService user.Service
 	authService auth.Service
