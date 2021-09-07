@@ -13,6 +13,7 @@ type UserHandler interface {
 	RegisterUser(c *gin.Context)
 	LoginUser(c *gin.Context)
 	IsEmailAvailable(c *gin.Context)
+	TestAuth(c *gin.Context)
 }
 
 type userHandler struct {
@@ -22,6 +23,13 @@ type userHandler struct {
 
 func NewUserHandler(userService user.Service, authService auth.Service) *userHandler {
 	return &userHandler{userService, authService}
+}
+
+func (h *userHandler) TestAuth(c *gin.Context) {
+	userLogged := c.MustGet("userLoggedIn").(user.User)
+	response := helper.ApiResponse("Halo user", 200, "success", user.FormatterOutput(userLogged, "haloyo"))
+	c.JSON(http.StatusOK, response)
+	return
 }
 
 func (h *userHandler) RegisterUser(c *gin.Context) {

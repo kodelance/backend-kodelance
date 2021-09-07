@@ -37,7 +37,7 @@ func main() {
 	userHandler := handler.NewUserHandler(userService, authService)
 
 	// Setup Router
-	r := routes.NewRoutes(userHandler)
+	r := routes.NewRoutes(userHandler, userService, authService)
 	route := r.Route()
 
 	route.Run()

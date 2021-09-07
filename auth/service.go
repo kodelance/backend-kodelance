@@ -23,7 +23,7 @@ var SECRET_KEY = []byte(os.Getenv("SECRET_KEY"))
 
 func (s *jwtService) GenerateToken(userId uint) (string, error) {
 	claim := jwt.MapClaims{}
-	claim["user_id"] = userId
+	claim["jwt_user_id"] = userId
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 
