@@ -26,6 +26,10 @@ func (r *routes) Route() *gin.Engine {
 	router := gin.Default()
 	api := router.Group("/api/v1")
 	{
+		api.GET("/", func(c *gin.Context) {
+			response := helper.ApiResponse("Selamat datang di Kodelance!", 200, "success", nil)
+			c.JSON(200, response)
+		})
 		api.POST("/auth/register", r.userHandler.RegisterUser)
 		api.POST("/auth/login", r.userHandler.LoginUser)
 		api.POST("/email_checkers", r.userHandler.IsEmailAvailable)
