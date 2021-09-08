@@ -8,14 +8,18 @@ import (
 	"kodelance/routes"
 	"kodelance/user"
 	"log"
+	"os"
 
 	"github.com/joho/godotenv"
 )
 
 func main() {
 	// Setup Env File
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+	var APP_ENV = os.Getenv("APP_ENV")
+	if APP_ENV != "PRODUCTION" {
+		if err := godotenv.Load(); err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 
 	// Setup Database
